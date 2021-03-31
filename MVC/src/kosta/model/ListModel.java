@@ -8,16 +8,18 @@ public class ListModel {
 	private int nPages;
 	private int startPage;
 	private int endPage;
-	
+	private int pagePerPagination;
+
 	public ListModel() {}
-	
-	public ListModel(List<Board> list, int requestPage, int nPages, int startPage, int endPage) {
+
+	public ListModel(List<Board> list, int requestPage, int nPages, int startPage, int endPage, int pagePerPagination) {
 		super();
 		this.list = list;
 		this.requestPage = requestPage;
 		this.nPages = nPages;
 		this.startPage = startPage;
 		this.endPage = endPage;
+		this.pagePerPagination = pagePerPagination;
 	}
 
 	public List<Board> getList() {
@@ -59,5 +61,13 @@ public class ListModel {
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
-	
+
+	public int getPagePerPagination() {
+		return pagePerPagination;
+	}
+
+	public void setPagePerPagination(int pagePerPagination) {
+		this.pagePerPagination = pagePerPagination;
+	}
+
 }

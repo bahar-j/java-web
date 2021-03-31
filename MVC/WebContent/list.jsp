@@ -36,7 +36,7 @@
 	</table>
 	<br><br>
 	
-	<c:if test="${listModel.startPage > 5 }">
+	<c:if test="${listModel.startPage > listModel.pagePerPagination }">
 		<a href="listAction.do?pageNum=${listModel.startPage-1 }">[이전]</a>
 	</c:if>
 	

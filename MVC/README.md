@@ -8,11 +8,13 @@
 #### 구조 🧩
 
 
-`request가 들어왔을 때`
+`request가 들어왔을 때` <br>
 Request -> Controller -> Action -> Service -> DAO(Database Access Object) -> DB
 
-`view에 보여줄 때`
+`view에 보여줄 때` <br>
 View <- Controller <- Action <- Service <- DAO(Database Access Object) <- DB
+
+<br>
 
 **View** : JSP <br>
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="kosta.mapper.BoardMapper">
+	<cache />
+	
+	<insert id="insertBoard" parameterType="Board">
+		insert into board(
+			SEQ, TITLE, WRITER, CONTENTS, REGDATE, HITCOUNT
+		)
+		values(
+			BOARD_SEQ.NEXTVAL, #{title}, #{writer}, #{contents}, SYSDATE, 0
+		)
+	</insert>
+	
+	<select id="listBoard" resultType="Board"> <!--여러개면 알아서 list로 해줌. 하나의 row 타입만 알려주면 됨-->
+		select * from board
+		<!--<if test="area != null">
+			<where>-->
+				<!-- where (title like %aa% or title like %aa%) -->
+				<!-- area안에 title, writer가 배열로 들어가있음. item이 그걸 하나씩 받아온 것(이름은 다른거 써도 됨) -->
+				<!-- 컬럼명은 sql안에서 변수가 될 수 없음. 상수처럼 미리 들어가있어야함. 리터럴처리가 됨. 원래부터 title, writer가 들어가있는 것 처럼.. -->
+				<!--<foreach collection="area" item="item" separator="OR" open="(" close=")">
+					${item} like #{searchKey}
+				</foreach>
+			</where>
+		</if>-->
+		order by seq desc
+	</select>
+	
+	<select id="detailBoard" parameterType="int" resultType="Board">
+		select * from board where seq = #{seq}
+	</select>
+	
+	<update id="updateBoard" parameterType="Board">
+		update board
+		set title = #{title},
+		contents = #{contents}
+		where seq = #{seq}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from board where seq = #{seq}
+	</delete>
+	
+	<select id="countBoard" resultType="int">
+		select count(*) from board
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

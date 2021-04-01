@@ -15,8 +15,8 @@ public class InsertReplyAction implements Action {
 		
 		service.insertReplyService(request);
 		
-		forward.setRedirect(false); // 수정해야함
-		forward.setPath("detailAction.do");
+		forward.setRedirect(true);
+		forward.setPath("detailAction.do?seq=" + request.getParameter("seq"));
 		
 		return forward;
 	}

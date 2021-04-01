@@ -8,11 +8,11 @@ public class Reply implements Serializable {
 	private String r_writer;
 	private String r_contents;
 	private String r_regdate;
-	private String seq;
+	private int seq;
 	
 	public Reply() {}
 
-	public Reply(int r_no, String r_title, String r_writer, String r_contents, String r_regdate, String seq) {
+	public Reply(int r_no, String r_title, String r_writer, String r_contents, String r_regdate, int seq) {
 		super();
 		this.r_no = r_no;
 		this.r_title = r_title;
@@ -62,11 +62,11 @@ public class Reply implements Serializable {
 		this.r_regdate = r_regdate;
 	}
 
-	public String getSeq() {
+	public int getSeq() {
 		return seq;
 	}
 
-	public void setSeq(String seq) {
+	public void setSeq(int seq) {
 		this.seq = seq;
 	}
 	

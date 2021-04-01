@@ -54,7 +54,7 @@ public class ReplyDao {
 	}
 	
 	public List<Reply> selectReplies(int seq){
-		List<Reply> replies = new ArrayList<Reply>();
+		List<Reply> replies = null;
 		SqlSession sqlSession = getSqlSession();
 		try {
 			replies = sqlSession.getMapper(ReplyMapper.class).selectReplies(seq);

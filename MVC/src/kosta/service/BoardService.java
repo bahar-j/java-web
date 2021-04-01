@@ -1,15 +1,20 @@
 package kosta.service;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import jdk.management.resource.internal.TotalResourceContext;
 import kosta.model.Board;
 import kosta.model.BoardDao;
 import kosta.model.ListModel;
 import kosta.model.Search;
+import kosta.model.ImageUtil;
 
 public class BoardService {
 	private static BoardService service = new BoardService();
@@ -25,11 +30,43 @@ public class BoardService {
 	
 	public int insertBaordService(HttpServletRequest request) throws Exception {
 		request.setCharacterEncoding("utf-8");
+		// 파일 업로드, DB에 파일 이름 저장
+		
+		// 파일 업로드(경로, 파일크기, 인코딩, 파일이름중첩 정책)
+		String uploadPath = request.getRealPath("upload");
+		System.out.println(uploadPath);
+		int size = 20 * 1024 * 1024; // 20mb
+		
+		MultipartRequest multi = new MultipartRequest(request, uploadPath, size, "utf-8", new DefaultFileRenamePolicy());
+		
 		
 		Board board = new Board();
-		board.setTitle(request.getParameter("title"));
-		board.setWriter(request.getParameter("writer"));
-		board.setContents(request.getParameter("contents"));
+		board.setTitle(multi.getParameter("title"));
+		board.setWriter(multi.getParameter("writer"));
+		board.setContents(multi.getParameter("contents"));
+		board.setFname("");
+		
+		// DB에 파일이름 저장
+		if(multi.getFilesystemName("fname") != null) {
+			String fname = (String)multi.getFilesystemName("fname");
+			board.setFname(fname);
+			
+			// 썸네일 이미지(gif, jpg) aa.gif => aa_small.gif로 바꾸기
+			String pattern = fname.substring(fname.indexOf(".")+1); // gif, jpg 
+			String head = fname.substring(0, fname.indexOf(".")); // aa 
+			
+			// 원본 파일 객체 
+			String imagePath = uploadPath + "/" + fname;
+			File src = new File(imagePath);
+			
+			// 썸네일 파일 객체 
+			String thumPath = uploadPath + "/" + head + "_small." + pattern;
+			File dest = new File(thumPath);
+			
+			if(pattern.equals("gif") || pattern.equals("jpg") || pattern.equals("JPG")) {
+				ImageUtil.resize(src, dest, 100, ImageUtil.RATIO);
+			}
+		}
 		
 		return dao.insertBoard(board);
 	}

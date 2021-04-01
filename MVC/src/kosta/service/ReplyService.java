@@ -22,7 +22,7 @@ public class ReplyService {
 		reply.setR_title(request.getParameter("r_title"));
 		reply.setR_writer(request.getParameter("r_writer"));
 		reply.setR_contents(request.getParameter("r_contents"));
-		reply.setSeq(request.getParameter("seq"));
+		reply.setSeq(Integer.parseInt(request.getParameter("seq")));
 		
 		return dao.insertReply(reply);
 	}

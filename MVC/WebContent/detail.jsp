@@ -15,6 +15,7 @@
 		<li>작성자:  ${board.writer}</li>
 		<li>조회수:  ${board.hitcount}</li>
 		<li>내용: ${board.contents}</li>
+		<li>파일: <a href="/MVC/download.jsp?filename=${board.fname }">${board.fname}</a></li>
 	</ul><br><br>
 	
 	<div>

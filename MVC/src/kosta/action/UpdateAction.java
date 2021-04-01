@@ -17,8 +17,8 @@ public class UpdateAction implements Action {
 		
 		service.updateBoardService(request);
 		
-		forward.setRedirect(false); // 원래 true로 하고 글 번호 파라미터 넘겨줘야 함 
-		forward.setPath("detailAction.do");
+		forward.setRedirect(true);
+		forward.setPath("detailAction.do?seq=" + request.getParameter("seq"));
 		
 		return forward;
 	}

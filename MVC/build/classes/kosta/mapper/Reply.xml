@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="kosta.mapper.ReplyMapper">
+	<cache />
+	
+	<select id="selectReplies" parameterType="int" resultType="Reply">
+		select * from reply
+		where seq = #{seq}
+	</select>
+	
+	<insert id="insertReply" parameterType="Reply">
+		insert into reply (r_no, r_title, r_writer, r_contents, r_regdate, seq)
+		values (reply_seq.nextval, #{r_title}, #{r_writer}, #{r_contents}, sysdate, #{seq})
+	</insert>
+	
+	<!--<update id="updateReply" parameterType="Reply">
+		update reply
+		set r_title = #{r_title},
+		r_contents = #{r_contents}
+		where r_no = #{r_no}
+	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		delete from reply
+		where r_no = #{r_no}
+	</delete>-->
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

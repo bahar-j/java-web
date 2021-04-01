@@ -1,3 +1,4 @@
+<%@page import="kosta.model.ListModel"%>
 <%@page import="kosta.model.Board"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -32,7 +33,6 @@
 			<td>${board.hitcount}</td>
 		</tr>
 		</c:forEach>
-		<%/* } */ %>
 	</table>
 	<br><br>
 	
@@ -42,7 +42,7 @@
 	
 	<c:forEach var="pageNo" begin="${listModel.startPage }" end="${listModel.endPage }">
 		<c:if test="${listModel.requestPage == pageNo}"><b></c:if>
-		<a href="listAction.do?pageNum=${pageNo }">[${pageNo }]</a>
+			<a href="listAction.do?pageNum=${pageNo }">[${pageNo }]</a>
 		<c:if test="${listModel.requestPage == pageNo}"></b></c:if>
 	</c:forEach>
 	
@@ -50,7 +50,7 @@
 		<a href="listAction.do?pageNum=${listModel.endPage+1 }">[이후]</a>
 	</c:if>
 	
-	<form action="list.jsp" method="post">
+	<form action="listAction.do" method="post">
 		<input type = "checkbox" name = "area" value = "title"> 제목
 		<input type = "checkbox" name = "area" value = "writer"> 작성자
 		<input type = "text" name = "searchKey" size = "10">

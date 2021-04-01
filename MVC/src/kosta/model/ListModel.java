@@ -9,9 +9,9 @@ public class ListModel {
 	private int startPage;
 	private int endPage;
 	private int pagePerPagination;
-
+	
 	public ListModel() {}
-
+	
 	public ListModel(List<Board> list, int requestPage, int nPages, int startPage, int endPage, int pagePerPagination) {
 		super();
 		this.list = list;

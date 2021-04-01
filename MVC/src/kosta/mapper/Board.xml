@@ -16,18 +16,18 @@
 		)
 	</insert>
 	
-	<select id="listBoard" resultType="Board"> <!--여러개면 알아서 list로 해줌. 하나의 row 타입만 알려주면 됨-->
+	<select id="listBoard" resultType="Board" parameterType="Search"> <!--여러개면 알아서 list로 해줌. 하나의 row 타입만 알려주면 됨-->
 		select * from board
-		<!--<if test="area != null">
+		<if test="area != null">
 			<where>-->
 				<!-- where (title like %aa% or title like %aa%) -->
 				<!-- area안에 title, writer가 배열로 들어가있음. item이 그걸 하나씩 받아온 것(이름은 다른거 써도 됨) -->
 				<!-- 컬럼명은 sql안에서 변수가 될 수 없음. 상수처럼 미리 들어가있어야함. 리터럴처리가 됨. 원래부터 title, writer가 들어가있는 것 처럼.. -->
-				<!--<foreach collection="area" item="item" separator="OR" open="(" close=")">
+				<foreach collection="area" item="item" separator="OR" open="(" close=")">
 					${item} like #{searchKey}
 				</foreach>
 			</where>
-		</if>-->
+		</if>
 		order by seq desc
 	</select>
 	
@@ -46,10 +46,19 @@
 		delete from board where seq = #{seq}
 	</delete>
 	
-	<select id="countBoard" resultType="int">
+	<select id="countBoard" resultType="int" parameterType="Search">
 		select count(*) from board
+		<if test="area != null">
+			<where>-->
+				<!-- where (title like %aa% or title like %aa%) -->
+				<!-- area안에 title, writer가 배열로 들어가있음. item이 그걸 하나씩 받아온 것(이름은 다른거 써도 됨) -->
+				<!-- 컬럼명은 sql안에서 변수가 될 수 없음. 상수처럼 미리 들어가있어야함. 리터럴처리가 됨. 원래부터 title, writer가 들어가있는 것 처럼.. -->
+				<foreach collection="area" item="item" separator="OR" open="(" close=")">
+					${item} like #{searchKey}
+				</foreach>
+			</where>
+		</if>
 	</select>
-	
 	
 </mapper>
 

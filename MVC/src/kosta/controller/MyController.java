@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import kosta.action.Action;
 import kosta.action.ActionForward;
 import kosta.action.InsertFormAction;
+import kosta.action.InsertReplyAction;
 import kosta.action.InsertAction;
 import kosta.action.DeleteAction;
 import kosta.action.DetailAction;
@@ -91,6 +92,14 @@ public class MyController extends HttpServlet {
 			}
     	} else if (command.equals("deleteAction.do")) {
     		action = new DeleteAction();
+    		
+    		try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	} else if (command.equals("insertReplyAction.do")) {
+    		action = new InsertReplyAction();
     		
     		try {
 				forward = action.execute(request, response);

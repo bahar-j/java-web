@@ -19,7 +19,7 @@ public class BoardDao {
 		return dao;
 	}
 	
-	public SqlSessionFactory getSqlSessionFactory() {
+	public SqlSession getSqlSession() {
 		String resource = "mybatis-config.xml";
 		InputStream in = null; // reader도 가능
 		
@@ -30,13 +30,13 @@ public class BoardDao {
 			e.printStackTrace();
 		}
 		
-		return new SqlSessionFactoryBuilder().build(in);
+		return new SqlSessionFactoryBuilder().build(in).openSession();
 	}
 	
 	public int insertBoard(Board board) {
 		int re = -1;
 		
-		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		SqlSession sqlSession = getSqlSession();
 		try {
 			re = sqlSession.getMapper(BoardMapper.class).insertBoard(board);
 			if (re > 0) {
@@ -54,11 +54,12 @@ public class BoardDao {
 		return re;
 	}
 	
-	public List<Board> listBoard(int startRow, int postPerPage){
+	public List<Board> listBoard(Search search, int startRow, int postPerPage){
 		List<Board> list = null;
-		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		SqlSession sqlSession = getSqlSession();
+		
 		try {
-			list = sqlSession.getMapper(BoardMapper.class).listBoard(new RowBounds(startRow, postPerPage));
+			list = sqlSession.getMapper(BoardMapper.class).listBoard(search, new RowBounds(startRow, postPerPage));
 //			list = sqlSession.selectList("kosta.mapper.BoardMapper.listBoard");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,7 +73,7 @@ public class BoardDao {
 	
 	public Board detailBoard(int seq) {
 		Board board = null;
-		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		SqlSession sqlSession = getSqlSession();
 		
 		try {
 			board = sqlSession.selectOne("kosta.mapper.BoardMapper.detailBoard", seq);
@@ -89,7 +90,7 @@ public class BoardDao {
 	public int updateBoard(Board board) {
 		int re = -1;
 		
-		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		SqlSession sqlSession = getSqlSession();
 		try {
 			re = sqlSession.update("kosta.mapper.BoardMapper.updateBoard", board);
 			if (re > 0) {
@@ -110,7 +111,7 @@ public class BoardDao {
 	public int deleteBoard(int seq) {
 		int re = -1;
 		
-		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		SqlSession sqlSession = getSqlSession();
 		try {
 			re = sqlSession.delete("kosta.mapper.BoardMapper.deleteBoard", seq);
 			if (re > 0) {
@@ -129,12 +130,12 @@ public class BoardDao {
 		return re;
 	}
 	
-	public int countBoard() {
+	public int countBoard(Search search) {
 		int cnt = 0;
 		
-		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		SqlSession sqlSession = getSqlSession();
 		try {
-			cnt = sqlSession.selectOne("kosta.mapper.BoardMapper.countBoard");
+			cnt = sqlSession.selectOne("kosta.mapper.BoardMapper.countBoard", search);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

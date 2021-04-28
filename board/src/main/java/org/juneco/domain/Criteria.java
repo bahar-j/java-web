@@ -11,11 +11,12 @@ import lombok.ToString;
 public class Criteria {
 
   private int pageNum; // 현재 페이지
-  private int amount; // 한페이지당 글 몇
+  private int amount; // 페이지당 글 갯수
   
   private String type;
   private String keyword;
 
+  // pageNum, amount가 param으로 넘어오지 않은 경우 (default)
   public Criteria() {
     this(1, 10);
   }

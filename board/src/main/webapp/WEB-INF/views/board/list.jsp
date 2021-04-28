@@ -37,7 +37,9 @@
 
 					<c:forEach items="${list}" var="board">
 						<tr>
+							<!-- 방법1  -->
 							<td><c:out value="${board.bno}" /></td>
+							<!-- 방법2 -->
 							<%-- <td><a href='/board/get?bno=<c:out value="${board.bno}"/>'><c:out value="${board.title}"/></a></td> --%>
 
 							<td><a class='move' href='<c:out value="${board.bno}"/>'>

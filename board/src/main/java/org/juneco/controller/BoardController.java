@@ -7,6 +7,7 @@ import org.juneco.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,11 +30,11 @@ public class BoardController {
 	public void list(Criteria cri, Model model) {
 		log.info("list...." + cri);
 		model.addAttribute("list", service.getList(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, 123));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotal(cri)));
 	}
 	
 	@GetMapping({"/get", "/modify"})
-	public void read(@RequestParam("bno") Long bno, Model model) {
+	public void read(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) {
 		log.info("read one...");
 		model.addAttribute("board", service.get(bno));
 	}
@@ -52,18 +53,21 @@ public class BoardController {
 	}
 	
 	@PostMapping("/remove")
-	public String registerBoard(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
+	public String registerBoard(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		if (service.remove(bno)) {
 			rttr.addFlashAttribute("result", "success");
 		} else {
 			rttr.addFlashAttribute("result", "fail");
 		}
 		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		
 		return "redirect:/board/list";
 	}
 	
 	@PostMapping("/modify")
-	public String modifyBoard(BoardVO board, RedirectAttributes rttr) {
+	public String modifyBoard(@ModelAttribute("cri") Criteria cri, BoardVO board, RedirectAttributes rttr) {
 		log.info("modify: " + board);
 		
 		if (service.modify(board)) {
@@ -71,6 +75,9 @@ public class BoardController {
 		} else {
 			rttr.addFlashAttribute("result", "fail");
 		}
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		
 		return "redirect:/board/list";
 	}

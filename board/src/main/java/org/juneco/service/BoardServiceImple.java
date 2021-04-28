@@ -19,35 +19,34 @@ public class BoardServiceImple implements BoardService {
 	
 	@Override
 	public void register(BoardVO board) {
-		// TODO Auto-generated method stub
 		mapper.insertSelectKey(board);
 	}
 
 	@Override
 	public BoardVO get(Long bno) {
-		// TODO Auto-generated method stub
 		return mapper.read(bno);
 	}
 
 	@Override
 	public boolean modify(BoardVO board) {
-		// TODO Auto-generated method stub
 		return mapper.update(board) == 1;
 	}
 
 	@Override
 	public boolean remove(Long bno) {
-		// TODO Auto-generated method stub
 		// 성공하면 1 반환
 		return mapper.delete(bno) == 1;
 	}
 
 	@Override
 	public List<BoardVO> getList(Criteria cri) {
-		// TODO Auto-generated method stub
-		
 //		return mapper.getList();
 		return mapper.getListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotal(Criteria cri) {
+		return mapper.getTotalCount(cri);
 	}
 
 }

@@ -63,7 +63,9 @@ public class BoardMapperTests {
 	public void testGetListWithPaging() {
 		Criteria cri = new Criteria();
 		cri.setPageNum(3);
-		cri.setAmount(3);
+		cri.setAmount(10);
+		cri.setKeyword("new");
+		cri.setType("T");
 		List<BoardVO> boards = mapper.getListWithPaging(cri);
 		boards.forEach(board -> log.info(board));
 	}

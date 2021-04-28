@@ -34,6 +34,8 @@ public class BoardController {
 	}
 	
 	@GetMapping({"/get", "/modify"})
+	// ModelAttribute: 받아옴과 동시에 jsp로 넘겨줄 수 있음	+ 변수명 지어줄 수 있음
+	// ModelAttribute 안써도 객체는 맨 앞 글자를 소문자로 바꿔서 받을 수 있음
 	public void read(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) {
 		log.info("read one...");
 		model.addAttribute("board", service.get(bno));
@@ -60,10 +62,12 @@ public class BoardController {
 			rttr.addFlashAttribute("result", "fail");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+//		rttr.addAttribute("pageNum", cri.getPageNum());
+//		rttr.addAttribute("amount", cri.getAmount());
+//		rttr.addAttribute("type", cri.getType());
+//		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/board/list";
+		return "redirect:/board/list" + cri.getListLink();
 	}
 	
 	@PostMapping("/modify")
@@ -76,10 +80,12 @@ public class BoardController {
 			rttr.addFlashAttribute("result", "fail");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+//		rttr.addAttribute("pageNum", cri.getPageNum());
+//		rttr.addAttribute("amount", cri.getAmount());
+//		rttr.addAttribute("type", cri.getType());
+//		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/board/list";
+		return "redirect:/board/list" + cri.getListLink();
 	}
 	
 }

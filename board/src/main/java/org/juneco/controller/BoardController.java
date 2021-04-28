@@ -1,0 +1,78 @@
+package org.juneco.controller;
+
+import org.juneco.domain.BoardVO;
+import org.juneco.domain.Criteria;
+import org.juneco.domain.PageDTO;
+import org.juneco.service.BoardService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Controller
+@Log4j
+@RequestMapping("/board/*")
+@AllArgsConstructor
+public class BoardController {
+	
+	// 자동 DI
+	private BoardService service;
+	
+	@GetMapping("/list")
+	// return 타입이 void면 url이 jsp 이름 (board/list.jsp)
+	public void list(Criteria cri, Model model) {
+		log.info("list...." + cri);
+		model.addAttribute("list", service.getList(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, 123));
+	}
+	
+	@GetMapping({"/get", "/modify"})
+	public void read(@RequestParam("bno") Long bno, Model model) {
+		log.info("read one...");
+		model.addAttribute("board", service.get(bno));
+	}
+	
+	@PostMapping("/register")
+	public String registerBoard(BoardVO board, RedirectAttributes rttr) {
+		log.info("register: " + board);
+		service.register(board);
+		rttr.addFlashAttribute("result", board.getBno());
+		return "redirect:/board/list";
+	}
+	
+	@GetMapping("/register")
+	public void register() {
+		
+	}
+	
+	@PostMapping("/remove")
+	public String registerBoard(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
+		if (service.remove(bno)) {
+			rttr.addFlashAttribute("result", "success");
+		} else {
+			rttr.addFlashAttribute("result", "fail");
+		}
+		
+		return "redirect:/board/list";
+	}
+	
+	@PostMapping("/modify")
+	public String modifyBoard(BoardVO board, RedirectAttributes rttr) {
+		log.info("modify: " + board);
+		
+		if (service.modify(board)) {
+			rttr.addFlashAttribute("result", "success");
+		} else {
+			rttr.addFlashAttribute("result", "fail");
+		}
+		
+		return "redirect:/board/list";
+	}
+	
+}

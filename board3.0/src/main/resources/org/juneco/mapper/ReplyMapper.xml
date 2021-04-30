@@ -32,16 +32,7 @@
 
 	</update>
 
-
-	<select id="getListWithPaging"
-		resultType="org.juneco.domain.ReplyVO">
-		select rno, bno, reply, replyer, replyDate, updatedate
-		from tbl_reply
-		where bno = #{bno}
-		order by rno asc
-	</select>
-
-	<!-- <select id="getListWithPaging" resultType="org.juneco.domain.ReplyVO">
+	<select id="getListWithPaging" resultType="org.juneco.domain.ReplyVO">
 	
 	  <![CDATA[
 	 select  rno, bno, reply, replyer, replydate, updatedate
@@ -63,7 +54,7 @@
 		<![CDATA[
 		select count(rno) from tbl_reply where bno = #{bno}
 		]]>
-	</select> -->
+	</select>
 
 
 </mapper>

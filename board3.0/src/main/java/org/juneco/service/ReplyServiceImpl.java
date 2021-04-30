@@ -3,6 +3,7 @@ package org.juneco.service;
 import java.util.List;
 
 import org.juneco.domain.Criteria;
+import org.juneco.domain.ReplyPageDTO;
 import org.juneco.domain.ReplyVO;
 import org.juneco.mapper.ReplyMapper;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,12 @@ public class ReplyServiceImpl implements ReplyService {
 	public List<ReplyVO> getList(Criteria cri, Long bno) {
 		// TODO Auto-generated method stub
 		return mapper.getListWithPaging(cri, bno);
+	}
+
+	@Override
+	public ReplyPageDTO getListPage(Criteria cri, Long bno) {
+		// TODO Auto-generated method stub
+		return new ReplyPageDTO(mapper.getCountByBno(bno), mapper.getListWithPaging(cri, bno));
 	}
 
 }

@@ -3,6 +3,7 @@ package org.juneco.controller;
 import java.util.List;
 
 import org.juneco.domain.Criteria;
+import org.juneco.domain.ReplyPageDTO;
 import org.juneco.domain.ReplyVO;
 import org.juneco.service.ReplyService;
 import org.springframework.http.HttpStatus;
@@ -43,10 +44,11 @@ public class ReplyController {
 						MediaType.APPLICATION_XML_VALUE,
 						MediaType.APPLICATION_JSON_UTF8_VALUE
 				})
-	public ResponseEntity<List<ReplyVO>> getList(@PathVariable int page, @PathVariable Long bno) {
-		List<ReplyVO> replies = service.getList(new Criteria(page, 10), bno);
-		log.info(replies);
-		return new ResponseEntity<List<ReplyVO>>(replies, HttpStatus.OK);
+	public ResponseEntity<ReplyPageDTO> getList(@PathVariable int page, @PathVariable Long bno) {
+		// TODO: 10이라는 페이징 기준이 백에도 있고 프론트에도 있어서 관리하기 어려움 -> 수정 필요
+		ReplyPageDTO replyDto = service.getListPage(new Criteria(page, 10), bno);
+		log.info(replyDto);
+		return new ResponseEntity<ReplyPageDTO>(replyDto, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{rno}",

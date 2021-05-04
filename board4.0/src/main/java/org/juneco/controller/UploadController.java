@@ -66,50 +66,6 @@ public class UploadController {
 		log.info("upload ajax");
 	}
 	
-//	@PostMapping("/uploadAjaxAction")
-//	public void uploadAjaxPost(MultipartFile[] uploadFile) {
-//		log.info("upadte ajax post...");
-//		
-//		String uploadFolder = "/Users/leejooeun/Spring/upload";
-//		
-//		File uploadPath = new File(uploadFolder, getFolder());
-//		log.info("upload path: " + uploadPath);
-//		
-//		if(uploadPath.exists() == false) {
-//			uploadPath.mkdirs();
-//		}
-//		
-//		for(MultipartFile multipartFile : uploadFile) {
-//			String uploadFileName = multipartFile.getOriginalFilename();
-//			
-//			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("/") + 1);
-//			log.info("only file name: " + uploadFileName);
-//			
-//			UUID uuid = UUID.randomUUID();
-//			
-//			uploadFileName = uuid.toString() + "_" + uploadFileName;
-//			
-////			File saveFile = new File(uploadFolder, uploadFileName);
-//			File saveFile = new File(uploadPath, uploadFileName);
-//			
-//			try {
-//				multipartFile.transferTo(saveFile);
-//				
-//				if(checkImageType(saveFile)) {
-//					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
-//					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
-//					thumbnail.close();
-//				}
-//			} catch (IllegalStateException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-	
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
@@ -202,9 +158,7 @@ public class UploadController {
 		ResponseEntity<byte[]> result = null;
 
 		try {
-
 			HttpHeaders header = new HttpHeaders();
-
 			header.add("Content-Type", Files.probeContentType(file.toPath()));
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
 

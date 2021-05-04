@@ -30,7 +30,33 @@
 .uploadResult ul li img {
 	width: 20px;
 }
+.bigPictureWrapper {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top:0%;
+  width:100%;
+  height:100%;
+  background-color: gray; 
+  z-index: 100;
+}
+
+.bigPicture {
+  position: relative;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bigPicture img {
+	width: 600px;
+}
 </style>
+	<div class='bigPictureWrapper'>
+	  <div class='bigPicture'>
+	  </div>
+	</div>
 	<div class="uploadResult">
 		<ul>
 		
@@ -66,7 +92,22 @@
 			}
 			return true;
 		}
+		
+		function showImage(fileCallPath){
+			$(".bigPictureWrapper").css("display", "flex").show();
+			
+			$(".bigPicture")
+			.html("<img src='/display?fileName=" + encodeURI(fileCallPath) + "'>")
+			.animate({width: '100%', height: '100%'}, 1000);
+		}
 
+		$(".bigPictureWrapper").on("click", function(e){
+			  $(".bigPicture").animate({width:'0%', height: '0%'}, 1000);
+			  setTimeout(() => {
+			    $(this).hide();
+			  }, 1000);
+			});
+		
 		var cloneObj = $(".uploadDiv").clone();
 
 		$(document).ready(function() {
@@ -110,7 +151,6 @@
 					function(i, obj) {
 
 						if (!obj.image) {
-							
 							var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
 							str += "<li><a href='/download?fileName=" + fileCallPath + " '>" + "<img src='/resources/img/attach.png'>"
 									+ obj.fileName + "</a></li>";
@@ -118,10 +158,9 @@
 							/* str += "<li>" + obj.fileName + "</li>"; */
 							var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
 							console.log("file path: " + fileCallPath);
+							var originPath = obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName;
 							
-							str += "<li><img src='/display?fileName=" + fileCallPath + "'></li>"
-								+ obj.fileName + "</li>";
-						}
+							str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName=" + fileCallPath + "'></a></li>";						}
 					});
 
 			uploadResult.append(str);

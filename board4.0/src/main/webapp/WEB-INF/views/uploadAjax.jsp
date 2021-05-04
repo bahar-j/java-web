@@ -106,7 +106,24 @@
 			  setTimeout(() => {
 			    $(this).hide();
 			  }, 1000);
-			});
+		});
+		
+		// span은 동적으로 생성되는 태그이기 때문에 이렇게 이벤트 걸어줌 
+		$(".uploadResult").on("click", "span", function(e){
+			  var targetFile = $(this).data("file");
+			  var type = $(this).data("type");
+			  console.log(targetFile);
+			  
+			  $.ajax({
+			    url: '/deleteFile',
+			    data: {fileName: targetFile, type:type},
+			    dataType:'text',
+			    type: 'POST',
+			      success: function(result){
+			         alert(result);
+			       }
+			  }); //$.ajax
+		});
 		
 		var cloneObj = $(".uploadDiv").clone();
 
@@ -144,7 +161,6 @@
 
 		function showUploadedFile(uploadResultArr) {
 
-			console.log("hefe")
 			var str = "";
 
 			$(uploadResultArr).each(
@@ -152,15 +168,18 @@
 
 						if (!obj.image) {
 							var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
-							str += "<li><a href='/download?fileName=" + fileCallPath + " '>" + "<img src='/resources/img/attach.png'>"
-									+ obj.fileName + "</a></li>";
+							str += "<li><div><a href='/download?fileName=" + fileCallPath + " '>" + "<img src='/resources/img/attach.png'>"
+									// data로 시작하는 property : 어떤 값을 저장하기 위한 용도
+									+ obj.fileName + "</a>" + "<span data-file=\'" + fileCallPath + "\' data-type='file'> x </span>" + "</div></li>";
 						} else {
 							/* str += "<li>" + obj.fileName + "</li>"; */
 							var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
 							console.log("file path: " + fileCallPath);
 							var originPath = obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName;
+							console.log("originPath: " + originPath);
 							
-							str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName=" + fileCallPath + "'></a></li>";						}
+							str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName=" + fileCallPath + "'></a>" 
+									+ "<span data-file=\'" + fileCallPath + "\' data-type='image'> x </span>" + "</li>";						}
 					});
 
 			uploadResult.append(str);

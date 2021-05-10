@@ -13,19 +13,20 @@
 		<!-- <security:access-denied-handler error-page="/accessError"/> -->
 		<security:access-denied-handler ref="customAccessDenied"/>
 		<security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccessed"/>
-		<security:logout logout-url="/customLogout" invalidate-session="true"/>
+		<security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me, JSESSIONID"/>
+		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
 	</security:http>
 	
 	<security:authentication-manager>
-		<security:authentication-provider>
+		<security:authentication-provider user-service-ref="customUserDetailsService">
 			<!-- <security:user-service>
 				<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/>
 				<security:user name="admin" password="{noop}admin" authorities="ROLE_MEMBER, ROLE_ADMIN"/>
 			</security:user-service> -->
 			<!-- <security:jdbc-user-service data-source-ref="dataSource"/> -->
-			<security:jdbc-user-service data-source-ref="dataSource"
+			<!-- <security:jdbc-user-service data-source-ref="dataSource"
 			users-by-username-query="select userid, userpw, enabled from tbl_member where userid = ?"
-			authorities-by-username-query="select * from tbl_member_auth where userid = ?"/>
+			authorities-by-username-query="select * from tbl_member_auth where userid = ?"/> -->
 			<!-- <security:password-encoder ref="customPasswordEncoder"/> -->
 			<security:password-encoder ref="bcryptPasswordEncoder"/>
 		</security:authentication-provider>
@@ -35,4 +36,6 @@
 	<bean id="customLoginSuccessed" class="org.juneco.security.CustomLoginSuccessHandler"></bean>
 	<!-- <bean id="customPasswordEncoder" class="org.juneco.security.CustomNoOpPasswordEncoder"></bean> -->
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	<!-- 다른 xml에서 bean 생성할 때와는 다르게 클래스 이름까지 써줘야함(어노테이션으로 인식 x) -->
+	<bean id="customUserDetailsService" class="org.juneco.security.CustomUserDetailsService"></bean>
 </beans>

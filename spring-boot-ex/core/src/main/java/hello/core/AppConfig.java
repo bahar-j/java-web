@@ -27,6 +27,7 @@ public class AppConfig {
         return new MemoryMemberRepository();
     }
 
+    // 생성 + 의존관계 주입
     @Bean
     public OrderService orderService(){
         return new OrderServiceImpl(memberRepository(),discountPolicy());

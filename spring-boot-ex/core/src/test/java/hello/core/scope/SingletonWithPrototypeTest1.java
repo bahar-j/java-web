@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -47,7 +48,8 @@ public class SingletonWithPrototypeTest1 {
         // 프로토타입 빈이지만 싱글톤 빈 생성 시점에 주입된 것을 계속 재사용
         // 서로 다른 싱글톤 빈은 다른 프로토타입 빈을 주입받긴 함
 //        private final PrototypeBean prototypeBean;
-        private final ObjectProvider<PrototypeBean> prototypeBeanObjectProvider;
+//        private final ObjectProvider<PrototypeBean> prototypeBeanObjectProvider;
+        private final Provider<PrototypeBean> prototypeBeanObjectProvider;
 
 //        @Autowired
 //        ApplicationContext applicationContext;
@@ -55,7 +57,8 @@ public class SingletonWithPrototypeTest1 {
         public int logic(){
             // 무식한 해결 방법 : Dependency Lookup(DL) 의존관계를 주입받는게 아니라 직접 찾는 것
 //            PrototypeBean prototypeBean = applicationContext.getBean(PrototypeBean.class);
-            PrototypeBean prototypeBean = prototypeBeanObjectProvider.getObject();
+//            PrototypeBean prototypeBean = prototypeBeanObjectProvider.getObject();
+            PrototypeBean prototypeBean = prototypeBeanObjectProvider.get();
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }

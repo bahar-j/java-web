@@ -14,14 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 public class LogDemoController {
 
     private final LogDemoService logDemoSerivce;
-    private final ObjectProvider<MyLogger> myLoggerObjectProvider;
+//    private final ObjectProvider<MyLogger> myLoggerObjectProvider;
+private final MyLogger myLogger;
 
     @RequestMapping("log-demo")
     @ResponseBody
     public String logDemo(HttpServletRequest request) throws InterruptedException {
         String requestURL = request.getRequestURL().toString();
         // 이 시점에 request bean(MyLogger)이 생성됨. -> uuid, reqeustURL 넣어줌
-        MyLogger myLogger = myLoggerObjectProvider.getObject();
+//        MyLogger myLogger = myLoggerObjectProvider.getObject();
         myLogger.setRequestURL(requestURL);
 
         myLogger.log("controller test");
